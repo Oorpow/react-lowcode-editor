@@ -1,8 +1,10 @@
+import LowcodeEditor from "./editor"
+
 function App() {
 
   return (
     <>
-      home
+      <LowcodeEditor />
     </>
   )
 }
