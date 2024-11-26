@@ -1,11 +1,13 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
-import { useMaterialDrop } from '../../../hooks/useMaterialDrop';
+import { useMaterialDrop } from '@/hooks/useMaterialDrop';
 
-interface PageProps {
+export interface CommonComponentProps {
 	id: number;
 	name: string;
 	[key: string]: any;
 }
+
+interface PageProps extends CommonComponentProps{}
 
 const Page: FunctionComponent<PropsWithChildren<PageProps>> = ({
 	children,
@@ -16,9 +18,10 @@ const Page: FunctionComponent<PropsWithChildren<PageProps>> = ({
 
 	return (
 		<div
+			data-component-id={id}
+			data-component-name={name}
 			ref={drop}
-			className="p-6 h-full box-border"
-			style={{ border: canDrop ? '2px solid blue' : 'none' }}
+			className={`box-border h-full p-6 ${canDrop ? 'border-2 border-blue-400' : 'border-none'}`}
 		>
 			{children}
 		</div>

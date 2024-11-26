@@ -1,21 +1,24 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
-import { useMaterialDrop } from '../../../hooks/useMaterialDrop';
+import { useMaterialDrop } from '@/hooks/useMaterialDrop';
+import { CommonComponentProps } from '../Page';
 
-interface ContainerProps {
-	id: number;
-	name: string;
-	[key: string]: any;
-}
+interface ContainerProps extends CommonComponentProps {}
 
 const Container: FunctionComponent<PropsWithChildren<ContainerProps>> = ({
 	children,
 	id,
 	name,
 }) => {
-	const { drop } = useMaterialDrop(['Button', 'Container'], id)
+	const { drop, canDrop } = useMaterialDrop(['Button', 'Container'], id);
 
 	return (
-		<div ref={drop} className="border min-h-[100px] p-5">
+		<div
+			data-component-id={id}
+			ref={drop}
+			className={`border min-h-[100px] p-5 ${
+				canDrop ? 'border-2 border-blue-400' : ''
+			}`}
+		>
 			{children}
 		</div>
 	);
