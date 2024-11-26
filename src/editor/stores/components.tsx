@@ -12,6 +12,8 @@ export interface Component {
 interface State {
 	// 组件树（使用children连接起来的树形结构）
 	components: Component[];
+	currentComponentId?: number | null;
+	currentComponent: Component | null;
 }
 
 // 操作组件树的方法
@@ -19,6 +21,7 @@ interface Action {
 	addComponent: (component: Component, parentId: number) => void;
 	removeComponent: (componentId: number) => void;
 	updateComponentProps: (componentId: number, props: any) => void;
+	setCurrentComponentId: (componentId: number | null) => void;
 }
 
 /**
@@ -54,6 +57,8 @@ export const useComponentsStore = create<State & Action>((set, get) => {
 				desc: '页面',
 			},
 		],
+		currentComponentId: null,
+		currentComponent: null,
 		// 向组件树添加新组件，若提供了parentId，则将新组件添加到父组件的children，否则添加到根组件列表中
 		addComponent: (component, parentId) =>
 			set((state) => {
@@ -116,5 +121,14 @@ export const useComponentsStore = create<State & Action>((set, get) => {
 					components: [...state.components],
 				};
 			}),
+		// click选中编辑区组件时，要展示编辑框，还要在右侧属性区展示对应组件的属性，因此需要保存在全局的state中
+		setCurrentComponentId: (componentId) => {
+			set((state) => {
+				return {
+					currentComponentId: componentId,
+					currentComponent: getComponentById(componentId, state.components)
+				}
+			})
+		},
 	};
 });
