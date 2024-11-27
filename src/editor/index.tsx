@@ -1,7 +1,7 @@
 import Material from './components/Material';
 import EditArea from './components/EditArea';
-import Settings from './components/Settings';
 import EditorHeader from './components/EditorHeader';
+import Settings from './components/Settings';
 
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';

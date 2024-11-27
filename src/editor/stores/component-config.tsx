@@ -3,11 +3,19 @@ import Container from '../materials/Container';
 import Button from '../materials/Button';
 import Page from '../materials/Page';
 
+export interface ComponentSetter {
+	name: string;
+	label: string;
+	type: string;
+	[key: string]: any
+}
+
 export interface ComponentConfig {
 	name: string;
 	description: string;
 	defaultProps: Record<string, any>;
 	component: any;
+	setter?: ComponentSetter[]
 }
 
 interface State {
@@ -43,6 +51,22 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 				text: 'Button',
 			},
 			component: Button,
+			setter: [
+				{
+					name: 'type',
+					label: '按钮类型',
+					type: 'select',
+					options: [
+						{ label: '主要', value: 'primary' },
+						{ label: '次要', value: 'default' },
+					]
+				},
+				{
+					name: 'text',
+					label: '按钮文本',
+					type: 'input',
+				}
+			],
 		},
 	},
 	registerComponent: (name, componentConfig) =>
