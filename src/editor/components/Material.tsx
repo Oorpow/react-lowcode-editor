@@ -4,10 +4,12 @@ import { useDrag } from 'react-dnd';
 
 interface MaterialItemProps {
 	name: string;
+	description: string;
 }
 
 export const MaterialItem: FunctionComponent<MaterialItemProps> = ({
 	name,
+	description
 }) => {
 	const [_, drag] = useDrag({
 		type: name,
@@ -19,9 +21,9 @@ export const MaterialItem: FunctionComponent<MaterialItemProps> = ({
 	return (
 		<div
 			ref={drag}
-			className="border-dashed border p-6 m-6 cursor-move inline-block bg-white hover:bg-slate-500"
+			className="inline-block p-6 m-6 bg-white border border-dashed cursor-move hover:bg-slate-500"
 		>
-			{name}
+			{description}
 		</div>
 	);
 };
@@ -36,7 +38,7 @@ function Material() {
 	return (
 		<div>
 			{components.map((comp, idx) => {
-				return <MaterialItem name={comp.name} key={comp.name + idx} />;
+				return <MaterialItem name={comp.name} description={comp.description} key={comp.name + idx} />;
 			})}
 		</div>
 	);

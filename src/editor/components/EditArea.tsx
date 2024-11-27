@@ -28,6 +28,7 @@ function EditArea() {
 				name: 'Container',
 				props: {},
 				children: [],
+				description: '容器'
 			},
 			1
 		);

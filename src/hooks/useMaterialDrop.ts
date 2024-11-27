@@ -19,11 +19,12 @@ export const useMaterialDrop = (accept: string[], id: number) => {
                 // 防止drop重复执行
                 if (monitor.didDrop()) return
 
-                const props = componentConfig[item.type].defaultProps
+                const config = componentConfig[item.type]
                 addComponent({
                     id: new Date().getTime(),
                     name: item.type,
-                    props
+                    props: config.defaultProps,
+                    description: config.description
                 }, id)
             },
             collect: (monitor) => ({

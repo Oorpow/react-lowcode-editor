@@ -4,6 +4,7 @@ export interface Component {
 	id: number;
 	name: string;
 	props: any;
+	description: string;
 	children?: Component[];
 	parentId?: number;
 }
@@ -54,7 +55,7 @@ export const useComponentsStore = create<State & Action>((set, get) => {
 				id: 1,
 				name: 'Page',
 				props: {},
-				desc: '页面',
+				description: '页面'
 			},
 		],
 		currentComponentId: null,

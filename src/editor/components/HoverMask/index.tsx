@@ -27,10 +27,6 @@ function HoverMask({
 
 	const { components } = useComponentsStore();
 
-	useEffect(() => {
-		updatePosition();
-	}, [componentId]);
-
 	function updatePosition() {
 		if (!componentId) return;
 
@@ -71,6 +67,14 @@ function HoverMask({
 		return getComponentById(componentId, components);
 	}, [componentId]);
 
+	useEffect(() => {
+		updatePosition();
+	}, [componentId]);
+
+	useEffect(() => {
+		updatePosition();
+	}, [components]);
+
 	return createPortal(
 		<>
 			<div
@@ -99,7 +103,7 @@ function HoverMask({
 				<div
                     className='px-2 text-sm text-white bg-blue-500 border-4 cursor-pointer whitespace-nowrap'
 				>
-					{curComponent?.name}
+					{curComponent?.description}
 				</div>
 			</div>
 		</>,

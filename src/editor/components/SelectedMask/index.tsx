@@ -31,10 +31,6 @@ const SelectedMask: FunctionComponent<SelectedMaskProps> = ({
 		setCurrentComponentId,
 	} = useComponentsStore();
 
-	useEffect(() => {
-		updatePosition();
-	}, [componentId]);
-
 	function updatePosition() {
 		if (!componentId) return;
 
@@ -89,7 +85,7 @@ const SelectedMask: FunctionComponent<SelectedMaskProps> = ({
 	const dropdownMenuItems: MenuProps['items'] = parentComponents.map(
 		(item) => ({
 			key: item?.id,
-			label: item?.name,
+			label: item?.description,
 		})
 	);
 
@@ -99,6 +95,14 @@ const SelectedMask: FunctionComponent<SelectedMaskProps> = ({
 		}
 		setCurrentComponentId(null);
 	}
+
+	useEffect(() => {
+		updatePosition();
+	}, [componentId]);
+
+	useEffect(() => {
+		updatePosition();
+	}, [components]);
 
 	return createPortal(
 		<>
@@ -152,7 +156,7 @@ const SelectedMask: FunctionComponent<SelectedMaskProps> = ({
 								whiteSpace: 'nowrap',
 							}}
 						>
-							{curComponent?.name}
+							{curComponent?.description}
 						</div>
 					</Dropdown>
 
