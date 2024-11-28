@@ -1,4 +1,4 @@
-import { CSSProperties, FunctionComponent, useEffect } from 'react';
+import { CSSProperties, FunctionComponent, useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Select } from 'antd';
 import { debounce } from 'lodash-es';
 import StyleToObject from 'style-to-object';
@@ -13,6 +13,7 @@ import CssEditor from './CssEditor';
 interface ComponentStyleProps {}
 
 const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
+	const [css, setCss] = useState(`.comp{\n\n}`);
 	const [form] = Form.useForm();
 	const { currentComponentId, currentComponent, updateComponentStyles } =
 		useComponentsStore();
@@ -27,6 +28,8 @@ const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
 			...data,
 			...currentComponent?.styles,
 		});
+
+		setCss(toCssStr(currentComponent?.styles!))
 	}, [currentComponent]);
 
 	if (!currentComponent || !currentComponentId) return null;
@@ -48,6 +51,22 @@ const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
 		if (currentComponentId) {
 			updateComponentStyles(currentComponentId, changeValues);
 		}
+	}
+
+	function toCssStr(css: Record<string, any>) {
+		let str = `.comp {\n`
+		for (const key in css) {
+			let val = css[key]
+			if (!val) {
+				continue
+			}
+			if (['width', 'height'].includes(key) && !val.toString().endsWith('px')) {
+				val += 'px'
+			}
+			str += `\t${key}: ${val};\n`
+		}
+		str += `}`
+		return str
 	}
 
 	/** 用户输入CSS样式后（防抖处理），存储到store中，由于change事件拿到的是CSS字符串，store需要的是对象，用style-to-object转换处理 */
@@ -101,7 +120,7 @@ const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
 			)}
 			<div className=" h-[200px] border border-gray-300">
 				<CssEditor
-					value={`.comp{\n\n}`}
+					value={css}
 					onChange={handleCssEditorChange}
 				/>
 			</div>
