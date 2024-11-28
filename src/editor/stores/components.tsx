@@ -25,7 +25,7 @@ interface Action {
 	removeComponent: (componentId: number) => void;
 	updateComponentProps: (componentId: number, props: any) => void;
 	setCurrentComponentId: (componentId: number | null) => void;
-	updateComponentStyles: (componentId: number, styles: CSSProperties) => void;
+	updateComponentStyles: (componentId: number, styles: CSSProperties, isReplace?: boolean) => void;
 }
 
 /**
@@ -136,14 +136,17 @@ export const useComponentsStore = create<State & Action>((set, get) => {
 					),
 				};
 			}),
-		updateComponentStyles: (componentId, styles) =>
+		updateComponentStyles: (componentId, styles, isReplace) =>
 			set((state) => {
 				const component = getComponentById(
 					componentId,
 					state.components
 				);
 				if (component) {
-					component.styles = { ...component.styles, ...styles };
+					// BUG: 当用户在CSS编辑器中输入样式更改组件样式后，再去删除样式，组件的样式不会恢复
+					// 原因: 👇🏻更新时，新的styles和原来的styles合并了，因此删除样式后，依然有之前的样式
+					// component.styles = { ...component.styles, ...styles };
+					component.styles = isReplace ? { ...styles } : { ...component.styles, ...styles };
 					return {
 						components: [...state.components],
 					};

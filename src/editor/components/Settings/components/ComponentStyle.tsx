@@ -20,6 +20,8 @@ const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
 
 	// 选中的组件发生变化时，将props设置到表单回显数据
 	useEffect(() => {
+		// 切换选中组件时，清空表单
+		form.resetFields();
 		const data = form.getFieldsValue();
 		form.setFieldsValue({
 			...data,
@@ -66,12 +68,15 @@ const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
 					)
 				] = value;
 			});
-
-			updateComponentStyles(currentComponentId, css);
+			// console.log(form.getFieldsValue(), css);
+			updateComponentStyles(
+				currentComponentId,
+				{ ...form.getFieldsValue(), ...css },
+				true
+			);
 		} catch (error) {
 			console.log('css change error', error);
 		}
-		console.log(value);
 	}, 1000);
 
 	return (
