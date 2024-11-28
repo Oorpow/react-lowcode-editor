@@ -102,20 +102,23 @@ const SelectedMask: FunctionComponent<SelectedMaskProps> = ({
 
 	// 通过Dropdown找到父组件并进行删除后，选中框的高度不会及时更新
 	useEffect(() => {
-		updatePosition();
+		// components发生变化，到渲染完毕，然后再通过getBoundingClientRect拿到改变后的宽高需要时间
+		setTimeout(() => {
+			updatePosition();
+		}, 1000);
 	}, [components]);
 
 	// 当窗口尺寸发生改变时，选中框不会重新计算位置
 	useEffect(() => {
 		const resizeHandler = () => {
-			updatePosition()
-		}
+			updatePosition();
+		};
 
-		window.addEventListener('resize', resizeHandler)
+		window.addEventListener('resize', resizeHandler);
 		return () => {
-			window.removeEventListener('resize', resizeHandler)
-		}
-	}, [])
+			window.removeEventListener('resize', resizeHandler);
+		};
+	}, []);
 
 	return createPortal(
 		<>
