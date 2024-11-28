@@ -1,10 +1,14 @@
 import { CSSProperties, FunctionComponent, useEffect } from 'react';
 import { Form, Input, InputNumber, Select } from 'antd';
+import { debounce } from 'lodash-es';
+import StyleToObject from 'style-to-object';
+
 import {
 	ComponentSetter,
 	useComponentConfigStore,
 } from '@/editor/stores/component-config';
 import { useComponentsStore } from '@/editor/stores/components';
+import CssEditor from './CssEditor';
 
 interface ComponentStyleProps {}
 
@@ -44,6 +48,32 @@ const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
 		}
 	}
 
+	/** 用户输入CSS样式后（防抖处理），存储到store中，由于change事件拿到的是CSS字符串，store需要的是对象，用style-to-object转换处理 */
+	const handleCssEditorChange = debounce((value) => {
+		const css: Record<string, any> = {};
+		try {
+			// 只保留中间的样式部分，不需要样式名、{}
+			const cssStr = value
+				.replace(/\/\*.*\*\//, '') // 去掉注释 /** */
+				.replace(/(\.?[^{]+{)/, '') // 去掉 .comp {
+				.replace('}', ''); // 去掉 }
+
+			// 将短横线样式，转为驼峰
+			StyleToObject(cssStr, (name, value) => {
+				css[
+					name.replace(/-\w/, (item) =>
+						item.toUpperCase().replace('-', '')
+					)
+				] = value;
+			});
+
+			updateComponentStyles(currentComponentId, css);
+		} catch (error) {
+			console.log('css change error', error);
+		}
+		console.log(value);
+	}, 1000);
+
 	return (
 		<Form
 			form={form}
@@ -64,6 +94,12 @@ const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
 					);
 				}
 			)}
+			<div className=" h-[200px] border border-gray-300">
+				<CssEditor
+					value={`.comp{\n\n}`}
+					onChange={handleCssEditorChange}
+				/>
+			</div>
 		</Form>
 	);
 };
