@@ -28,7 +28,10 @@ function EditArea() {
 				name: 'Container',
 				props: {},
 				children: [],
-				description: '容器'
+				description: '容器',
+				// styles: {
+				// 	background: 'red'
+				// }
 			},
 			1
 		);
@@ -48,6 +51,7 @@ function EditArea() {
 					key: comp.id,
 					id: comp.id,
 					name: comp.name,
+					styles: comp.styles,
 					...config.defaultProps,
 					...comp.props,
 				},

@@ -8,8 +8,8 @@ interface ButtonProps extends CommonComponentProps {
     text: string;
 }
 
-const Button: FunctionComponent<ButtonProps> = ({ id, type, text }) => {
-    return <AntdButton data-component-id={id} type={type}>{text}</AntdButton>;
+const Button: FunctionComponent<ButtonProps> = ({ id, type, text, styles }) => {
+    return <AntdButton data-component-id={id} type={type} style={styles}>{text}</AntdButton>;
 }
 
 export default Button;

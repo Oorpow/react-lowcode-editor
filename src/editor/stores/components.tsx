@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import { create } from 'zustand';
 
 export interface Component {
@@ -5,6 +6,7 @@ export interface Component {
 	name: string;
 	props: any;
 	description: string;
+	styles?: CSSProperties;
 	children?: Component[];
 	parentId?: number;
 }
@@ -23,6 +25,7 @@ interface Action {
 	removeComponent: (componentId: number) => void;
 	updateComponentProps: (componentId: number, props: any) => void;
 	setCurrentComponentId: (componentId: number | null) => void;
+	updateComponentStyles: (componentId: number, styles: CSSProperties) => void;
 }
 
 /**
@@ -55,7 +58,7 @@ export const useComponentsStore = create<State & Action>((set, get) => {
 				id: 1,
 				name: 'Page',
 				props: {},
-				description: '页面'
+				description: '页面',
 			},
 		],
 		currentComponentId: null,
@@ -123,13 +126,32 @@ export const useComponentsStore = create<State & Action>((set, get) => {
 				};
 			}),
 		// click选中编辑区组件时，要展示编辑框，还要在右侧属性区展示对应组件的属性，因此需要保存在全局的state中
-		setCurrentComponentId: (componentId) => {
+		setCurrentComponentId: (componentId) =>
 			set((state) => {
 				return {
 					currentComponentId: componentId,
-					currentComponent: getComponentById(componentId, state.components)
+					currentComponent: getComponentById(
+						componentId,
+						state.components
+					),
+				};
+			}),
+		updateComponentStyles: (componentId, styles) =>
+			set((state) => {
+				const component = getComponentById(
+					componentId,
+					state.components
+				);
+				if (component) {
+					component.styles = { ...component.styles, ...styles };
+					return {
+						components: [...state.components],
+					};
 				}
-			})
-		},
+
+				return {
+					components: [...state.components],
+				};
+			}),
 	};
 });

@@ -7,7 +7,7 @@ interface ContainerProps extends CommonComponentProps {}
 const Container: FunctionComponent<PropsWithChildren<ContainerProps>> = ({
 	children,
 	id,
-	name,
+	styles,
 }) => {
 	const { drop, canDrop } = useMaterialDrop(['Button', 'Container'], id);
 
@@ -18,6 +18,7 @@ const Container: FunctionComponent<PropsWithChildren<ContainerProps>> = ({
 			className={`border min-h-[100px] p-5 ${
 				canDrop ? 'border-2 border-blue-400' : ''
 			}`}
+			style={styles}
 		>
 			{children}
 		</div>
