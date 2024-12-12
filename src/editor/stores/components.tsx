@@ -17,6 +17,7 @@ interface State {
 	components: Component[];
 	currentComponentId?: number | null;
 	currentComponent: Component | null;
+	mode: 'edit' | 'preview';
 }
 
 // 操作组件树的方法
@@ -26,6 +27,7 @@ interface Action {
 	updateComponentProps: (componentId: number, props: any) => void;
 	setCurrentComponentId: (componentId: number | null) => void;
 	updateComponentStyles: (componentId: number, styles: CSSProperties, isReplace?: boolean) => void;
+	setMode: (mode: State['mode']) => void;
 }
 
 /**
@@ -63,6 +65,7 @@ export const useComponentsStore = create<State & Action>((set, get) => {
 		],
 		currentComponentId: null,
 		currentComponent: null,
+		mode: 'edit',
 		// 向组件树添加新组件，若提供了parentId，则将新组件添加到父组件的children，否则添加到根组件列表中
 		addComponent: (component, parentId) =>
 			set((state) => {
@@ -156,5 +159,6 @@ export const useComponentsStore = create<State & Action>((set, get) => {
 					components: [...state.components],
 				};
 			}),
+		setMode: (mode) => set({ mode })
 	};
 });

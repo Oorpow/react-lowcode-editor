@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import Container from '../materials/Container';
 import Button from '../materials/Button';
 import Page from '../materials/Page';
+import ProdContainer from '../materials/Container/prod.tsx'
+import ProdButton from '../materials/Button/prod.tsx'
+import ProdPage from '../materials/Page/prod.tsx'
 
 export interface ComponentSetter {
 	name: string;
@@ -14,9 +17,11 @@ export interface ComponentConfig {
 	name: string;
 	description: string;
 	defaultProps: Record<string, any>;
-	component: any;
 	setter?: ComponentSetter[]
 	stylesSetter?: ComponentSetter[]
+	// 区分编辑情况、预览状态
+	dev: any
+	prod: any
 }
 
 interface State {
@@ -36,13 +41,17 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
             name: 'Page',
 			description: '页面',
             defaultProps: {},
-            component: Page,
+            // component: Page,
+			dev: Page,
+			prod: ProdPage
         },
 		Container: {
 			name: 'Container',
 			description: '容器',
 			defaultProps: {},
-			component: Container,
+			// component: Container,
+			dev: Container,
+			prod: ProdContainer
 		},
 		Button: {
 			name: 'Button',
@@ -51,7 +60,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 				type: 'primary',
 				text: 'Button',
 			},
-			component: Button,
+			// component: Button,
+			dev: Button,
+			prod: ProdButton,
 			setter: [
 				{
 					name: 'type',

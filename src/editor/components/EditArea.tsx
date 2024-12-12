@@ -2,7 +2,6 @@ import {
 	createElement,
 	MouseEventHandler,
 	ReactNode,
-	useEffect,
 	useState,
 } from 'react';
 import { Component, useComponentsStore } from '../stores/components';
@@ -16,37 +15,20 @@ function EditArea() {
 	const {
 		components,
 		currentComponentId,
-		addComponent,
 		setCurrentComponentId,
 	} = useComponentsStore();
 	const { componentConfig } = useComponentConfigStore();
-
-	useEffect(() => {
-		addComponent(
-			{
-				id: 2,
-				name: 'Container',
-				props: {},
-				children: [],
-				description: '容器',
-				// styles: {
-				// 	background: 'red'
-				// }
-			},
-			1
-		);
-	}, []);
 
 	function renderComponents(components: Component[]): ReactNode {
 		return components.map((comp: Component) => {
 			const config = componentConfig?.[comp.name];
 
-			if (!config.component) {
+			if (!config.dev) {
 				return null;
 			}
 
 			return createElement(
-				config.component,
+				config.dev,
 				{
 					key: comp.id,
 					id: comp.id,
