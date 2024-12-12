@@ -28,7 +28,8 @@ const ComponentStyle: FunctionComponent<ComponentStyleProps> = () => {
 			...data,
 			...currentComponent?.styles,
 		});
-
+		
+		// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
 		setCss(toCssStr(currentComponent?.styles!))
 	}, [currentComponent]);
 

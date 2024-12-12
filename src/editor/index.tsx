@@ -1,7 +1,7 @@
-import Material from './components/Material';
 import EditArea from './components/EditArea';
 import EditorHeader from './components/EditorHeader';
 import Settings from './components/Settings';
+import MaterialWrapper from './components/MaterialWrapper';
 
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
@@ -14,7 +14,7 @@ const LowcodeEditor = () => {
             </div>
 			<Allotment>
 				<Allotment.Pane preferredSize={240} maxSize={300} minSize={200}>
-					<Material />
+					<MaterialWrapper />
 				</Allotment.Pane>
 				<Allotment.Pane>
 					<EditArea />
